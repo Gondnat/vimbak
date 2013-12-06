@@ -32,40 +32,49 @@ filetype indent on
 set scrolloff=3
 
 "taglist
-let Tlist_Show_One_File=1
-let Tlist_Exit_OnlyWindow=1
+"let Tlist_Auto_Open = 1  "在启动VIM后，自动打开taglist窗口  
+let Tlist_Use_Right_Window=0 " 1为让窗口显示在右边，0为显示在左边  
+let Tlist_Show_One_File=0 "让taglist可以同时展示多个文件的函数列表，设置为1时不同时显示>多个文件的tag，只显示当前文件的  
+let Tlist_File_Fold_Auto_Close=1 "同时显示多个文件中的tag时，taglist只显示当前文件tag，>其他文件的函数列表折叠隐藏  
+let Tlist_Exit_OnlyWindow=1 "当taglist是最后一个分割窗口时，自动退出vim  
+"let Tlist_Use_SingleClick= 1    " 缺省情况下，在双击一个tag时，才会跳到该tag定义的位置  
+"let Tlist_Process_File_Always=0  "是否一直处理tags.1:处理;0:不处理  
 
 "cscope
-set cscopequickfix=s-,c-,d-,i-,t-,e-
-if has("cscope")
-            set cscopetag   " 使支持用 Ctrl+]  和 Ctrl+t 快捷键在代码间跳来跳去
-            " check cscope for definition of a symbol before checking ctags:
-            " set to 1 if you want the reverse search order.
-             set csto=1
+set cscopequickfix=s-,c-,d-,i-,t-,e-    
+if has("cscope")    
+set csprg=/usr/local/bin/cscope    
+set csto=1    
+set cst    
+set nocsverb    
+" add any database in current directory     
+if filereadable("cscope.out")    
+   cs add cscope.out    
+endif    
+set csverb    
+endif   
 
-             " add any cscope database in current directory
-             if filereadable("cscope.out")
-                 cs add cscope.out
-             " else add the database pointed to by environment variable
-             elseif $CSCOPE_DB !=""
-                 cs add $CSCOPE_DB
-             endif
-
-             " show msg when any other cscope db added
-             set cscopeverbose
-
-             nmap <C-/>s :cs find s <C-R>=expand("<cword>")<CR><CR>
-             nmap <C-/>g :cs find g <C-R>=expand("<cword>")<CR><CR>
-             nmap <C-/>c :cs find c <C-R>=expand("<cword>")<CR><CR>
-             nmap <C-/>t :cs find t <C-R>=expand("<cword>")<CR><CR>
-             nmap <C-/>e :cs find e <C-R>=expand("<cword>")<CR><CR>
-             nmap <C-/>f :cs find f <C-R>=expand("<cfile>")<CR><CR>
-             nmap <C-/>i :cs find i ^<C-R>=expand("<cfile>")<CR>$<CR>
-             nmap <C-/>d :cs find d <C-R>=expand("<cword>")<CR><CR>
-endif
+nmap <C-@>s :cs find s <C-R>=expand("<cword>")<CR><CR>  
+nmap <C-@>g :cs find g <C-R>=expand("<cword>")<CR><CR>  
+nmap <C-@>c :cs find c <C-R>=expand("<cword>")<CR><CR>  
+nmap <C-@>t :cs find t <C-R>=expand("<cword>")<CR><CR>  
+nmap <C-@>e :cs find e <C-R>=expand("<cword>")<CR><CR>  
+nmap <C-@>f :cs find f <C-R>=expand("<cfile>")<CR><CR>  
+nmap <C-@>i :cs find i ^<C-R>=expand("<cfile>")<CR>$<CR>  
+nmap <C-@>d :cs find d <C-R>=expand("<cword>")<CR><CR>  
+"cscope替换Ctrl+]
+map g<C-]> :cs find 3 <C-R>=expand(“<cword>”)<CR><CR>
+map g<C-/> :cs find 0 <C-R>=expand(“<cword>”)<CR><CR>
 
 "tags
 set tags=tags
-set tags+=./tags
 set tags+=~/.vim/systags
 set autochdir
+
+map <F12> :!ctags -R --c++-kinds=+p --fields=+iaS --extra=+q .<CR><CR>  
+
+"OmniCppComplete
+set nocp
+
+"SuperTab
+let g:SuperTabDefaultCompletionType="context"
