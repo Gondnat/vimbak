@@ -43,14 +43,14 @@ let Tlist_Exit_OnlyWindow=1 "当taglist是最后一个分割窗口时，自动�
 "cscope
 set cscopequickfix=s-,c-,d-,i-,t-,e-    
 if has("cscope")    
-set csprg=/usr/local/bin/cscope    
+"set csprg=/usr/local/bin/cscope    
 set csto=1 "先查找tags在查找cscope数据库
 set cst    "":tag, Ctrl+]和Ctrl+t将使用cstags而不是默认的tag
 set nocsverb    
 set csverb    
 endif   
 
-map <F11>:!cscope -Rbq * <CR><CR>
+map <F12> :!sh ~/.vim/cstags.sh <CR><CR>
 
 nmap <C-@>s :cs find s <C-R>=expand("<cword>")<CR><CR>  
 nmap <C-@>g :cs find g <C-R>=expand("<cword>")<CR><CR>  
@@ -66,10 +66,14 @@ set tags=tags
 set tags+=~/.vim/systags
 set autochdir
 
-map <F12> :!ctags -R --c++-kinds=+p --fields=+iaS --extra=+q .<CR><CR>  
+"map <F12> :!ctags -R --c++-kinds=+p --fields=+iaS --extra=+q .<CR><CR>  
 
 "OmniCppComplete
 set nocp
 
 "SuperTab
 let g:SuperTabDefaultCompletionType="context"
+
+source $VIMRUNTIME/ftplugin/man.vim
+" Map the K key to the ReadMan function:
+map K :Man 3 <cword><CR>
