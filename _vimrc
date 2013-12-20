@@ -32,7 +32,7 @@ filetype indent on
 set scrolloff=3
 
 "taglist
-"let Tlist_Auto_Open = 1  "在启动VIM后，自动打开taglist窗口  
+let Tlist_Auto_Open = 1  "在启动VIM后，自动打开taglist窗口  
 let Tlist_Use_Right_Window=0 " 1为让窗口显示在右边，0为显示在左边  
 let Tlist_Show_One_File=0 "让taglist可以同时展示多个文件的函数列表，设置为1时不同时显示>多个文件的tag，只显示当前文件的  
 let Tlist_File_Fold_Auto_Close=1 "同时显示多个文件中的tag时，taglist只显示当前文件tag，>其他文件的函数列表折叠隐藏  
@@ -44,15 +44,13 @@ let Tlist_Exit_OnlyWindow=1 "当taglist是最后一个分割窗口时，自动�
 set cscopequickfix=s-,c-,d-,i-,t-,e-    
 if has("cscope")    
 set csprg=/usr/local/bin/cscope    
-set csto=1    
-set cst    
+set csto=1 "先查找tags在查找cscope数据库
+set cst    "":tag, Ctrl+]和Ctrl+t将使用cstags而不是默认的tag
 set nocsverb    
-" add any database in current directory     
-if filereadable("cscope.out")    
-   cs add cscope.out    
-endif    
 set csverb    
 endif   
+
+map <F11>:!cscope -Rbq * <CR><CR>
 
 nmap <C-@>s :cs find s <C-R>=expand("<cword>")<CR><CR>  
 nmap <C-@>g :cs find g <C-R>=expand("<cword>")<CR><CR>  
@@ -62,9 +60,6 @@ nmap <C-@>e :cs find e <C-R>=expand("<cword>")<CR><CR>
 nmap <C-@>f :cs find f <C-R>=expand("<cfile>")<CR><CR>  
 nmap <C-@>i :cs find i ^<C-R>=expand("<cfile>")<CR>$<CR>  
 nmap <C-@>d :cs find d <C-R>=expand("<cword>")<CR><CR>  
-"cscope替换Ctrl+]
-map g<C-]> :cs find 3 <C-R>=expand(“<cword>”)<CR><CR>
-map g<C-/> :cs find 0 <C-R>=expand(“<cword>”)<CR><CR>
 
 "tags
 set tags=tags
